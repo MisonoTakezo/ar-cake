@@ -23,7 +23,6 @@
     <div class="wrapper">
       <canvas></canvas>
     </div>
-    <!--❶ three.jsとAR.jsを読み込む-->
     <script src="https://unpkg.com/three@0.127.0/build/three.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/3.3.3/three.js/build/ar.js"></script>
     <script async>
@@ -36,7 +35,7 @@
       const scene = new THREE.Scene();
       const markerRoot = new THREE.Group();
       const arToolkitContext = new THREEx.ArToolkitContext({
-        cameraParametersUrl: "./camera_para.dat", // ❷ camera.datを読み込む
+        cameraParametersUrl: "./camera_para.dat",
         detectionMode: "mono",
       });
       const arToolkitSource = new THREEx.ArToolkitSource({
@@ -47,7 +46,7 @@
         markerRoot,
         {
           type: "pattern",
-          patternUrl: "./pattern-hiro.patt", // hello markerのpattを読み込む
+          patternUrl: "./pattern-hiro.patt", // hiro markerの pattを読み込む
         }
       );
 
@@ -64,8 +63,8 @@
       arToolkitSource.init(() => {
         document
           .querySelector(".wrapper")
-          .appendChild(arToolkitSource.domElement); // ❹ videoタグを.wrapper配下に移動させる
-        setTimeout(handleResize, 400); // ❺ リサイズイベントを一度発火させる
+          .appendChild(arToolkitSource.domElement);
+        setTimeout(handleResize, 400);
       });
 
       scene.add(markerRoot);
@@ -93,6 +92,7 @@
       }
       document.body.appendChild(selectElement);
 
+      // ケーキを作成
       const cakeGeometry = new THREE.CylinderGeometry(
         9 / 5 / 2, // 上面半径
         9 / 5 / 2, // 下面半径
@@ -125,7 +125,7 @@
         cake.geometry.dispose(); // 以前のジオメトリを破棄
         cake.geometry = new THREE.CylinderGeometry(
           scaleRatio / 2, // 上面半径
-          scaleRatio / 2, // 下面半径（直径はここで調整）
+          scaleRatio / 2, // 下面半経
           1, // 高さ
           32 // セグメント数
         );
