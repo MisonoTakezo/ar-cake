@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js + ar.js</title>
+    <title>AR CAKE</title>
     <meta
       name="viewport"
       content="width=device-width, viewport-fit=cover, shrink-to-fit=no"
@@ -68,14 +68,23 @@
 
       scene.add(markerRoot);
 
-      const cube = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshNormalMaterial()
-      );
+      // ライトを作成
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // 環境光
+      scene.add(ambientLight);
 
-      cube.position.set(0, 0.5, 0);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // 平行光
+      directionalLight.position.set(1, 1, 1);
+      scene.add(directionalLight);
 
-      markerRoot.add(cube);
+      const cakeGeometry = new THREE.CylinderGeometry(1, 0.8, 1, 32);
+      const cakeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff }); // 白色の材質
+
+      const cake = new THREE.Mesh(cakeGeometry, cakeMaterial);
+      cake.position.set(0, 0.5, 0);
+
+      scene.add(cake); // シーンにケーキを追加
+
+      markerRoot.add(cake);
 
       renderer.setAnimationLoop((delta) => {
         if (arToolkitSource.ready) {
