@@ -1,6 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
   <head>
     <title>AR CAKE</title>
+    <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, viewport-fit=cover, shrink-to-fit=no"
@@ -76,15 +78,58 @@
       directionalLight.position.set(1, 1, 1);
       scene.add(directionalLight);
 
-      const cakeGeometry = new THREE.CylinderGeometry(1, 0.8, 1, 32);
+      const selectElement = document.createElement("select");
+      for (let i = 3; i <= 10; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.text = `${i}号`;
+        selectElement.appendChild(option);
+      }
+      for (let i = 8; i <= 30; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.text = `${i} cm`;
+        selectElement.appendChild(option);
+      }
+      document.body.appendChild(selectElement);
+
+      const cakeGeometry = new THREE.CylinderGeometry(
+        9 / 5 / 2, // 上面半径
+        9 / 5 / 2, // 下面半径
+        1, // 高さ
+        32 // セグメント数
+      );
       const cakeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff }); // 白色の材質
 
       const cake = new THREE.Mesh(cakeGeometry, cakeMaterial);
-      cake.position.set(0, 0.5, 0);
+      cake.position.set(0, 0, 0);
 
       scene.add(cake); // シーンにケーキを追加
 
       markerRoot.add(cake);
+
+      selectElement.addEventListener("change", function () {
+        const selectedValue = parseFloat(this.value);
+
+        // もしoption.textが「号」を含んでいたら、直径を3倍にする
+        const targetDiameter = selectElement.options[
+          selectElement.selectedIndex
+        ].text.includes("号")
+          ? selectedValue * 3
+          : selectedValue;
+
+        const markerWidth = 5; // マーカーの幅
+
+        const scaleRatio = targetDiameter / markerWidth;
+        // ケーキのジオメトリを設定（直径を変更）
+        cake.geometry.dispose(); // 以前のジオメトリを破棄
+        cake.geometry = new THREE.CylinderGeometry(
+          scaleRatio / 2, // 上面半径
+          scaleRatio / 2, // 下面半径（直径はここで調整）
+          1, // 高さ
+          32 // セグメント数
+        );
+      });
 
       renderer.setAnimationLoop((delta) => {
         if (arToolkitSource.ready) {
