@@ -108,6 +108,27 @@
 
       markerRoot.add(cake);
 
+      const strawberryGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+      const strawberryMaterial = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+      });
+
+      const strawberries = [];
+
+      for (let i = 0; i < 8; i++) {
+        const strawberry = new THREE.Mesh(
+          strawberryGeometry,
+          strawberryMaterial
+        );
+        strawberry.position.set(
+          Math.cos((i / 8) * Math.PI * 2) * 0.7,
+          1.2,
+          Math.sin((i / 8) * Math.PI * 2) * 0.7
+        );
+        strawberries.push(strawberry);
+        markerRoot.add(strawberry);
+      }
+
       selectElement.addEventListener("change", function () {
         const selectedValue = parseFloat(this.value);
 
@@ -129,6 +150,14 @@
           1, // 高さ
           32 // セグメント数
         );
+
+        strawberries.forEach((strawberry) => {
+          strawberry.position.set(
+            Math.cos((i / 8) * Math.PI * 2) * (0.7 * scaleRatio), // x座標
+            1.2 * scaleRatio, // y座標
+            Math.sin((i / 8) * Math.PI * 2) * (0.7 * scaleRatio) // z座標
+          );
+        });
       });
 
       renderer.setAnimationLoop((delta) => {
