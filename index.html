@@ -116,14 +116,15 @@
       const strawberries = [];
 
       for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
         const strawberry = new THREE.Mesh(
           strawberryGeometry,
           strawberryMaterial
         );
         strawberry.position.set(
-          Math.cos((i / 8) * Math.PI * 2) * 0.7,
-          1,
-          Math.sin((i / 8) * Math.PI * 2) * 0.7
+          Math.cos(angle) * (0.35 * (9 / 5)),
+          0.7,
+          Math.sin(angle) * (0.35 * (9 / 5))
         );
         strawberries.push(strawberry);
         markerRoot.add(strawberry);
@@ -155,7 +156,7 @@
           const angle = (i / 8) * Math.PI * 2;
           const x = Math.cos(angle) * (0.35 * scaleRatio);
           const z = Math.sin(angle) * (0.35 * scaleRatio);
-          strawberry.position.set(x, 1, z);
+          strawberry.position.set(x, 0.7, z);
         });
       });
 
